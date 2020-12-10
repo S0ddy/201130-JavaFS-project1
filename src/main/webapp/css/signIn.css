@@ -1,0 +1,52 @@
+body {
+    background-image: url(../../../../imgs/sign-in-background.jpg);
+    background-position: cover;
+}
+
+body:before {
+    content: ""; 
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(120deg, #133601, #05252f);
+    z-index: -1;
+    opacity: .7;
+}
+
+.container>.row {
+    justify-content: center;
+}
+
+#signInPopUp {
+    padding: 30px 50px 50px;
+    margin: 50px;
+    border: 1px solid #918787;
+    border-radius: 20px;
+    background-color: #ddddddd9;
+}
+
+#signInLogo {
+    text-align: center;
+}
+
+#signInForm>div {
+    margin-bottom: 10px;
+}
+
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+button.my-button:hover {
+    background-color: #ffbc53;
+    border-color: #ffbc53;
+    color: #000;
+}
+
+button.my-button {
+    background-color: #fe6547;
+    border-color: #fe6547;
+}
