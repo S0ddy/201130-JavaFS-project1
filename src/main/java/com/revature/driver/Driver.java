@@ -1,4 +1,4 @@
-package com.revature;
+package com.revature.driver;
 
 import java.sql.Connection;
 import java.sql.SQLException;

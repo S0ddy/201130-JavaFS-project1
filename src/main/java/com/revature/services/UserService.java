@@ -2,13 +2,13 @@ package com.revature.services;
 
 import java.util.List;
 
-import com.revature.daos.UserDao;
-import com.revature.daos.UserPostgres;
 import com.revature.models.User;
+import com.revature.repos.UserDAO;
+import com.revature.repos.UserDAOImpl;
 
 public class UserService {
 	
-	private static UserDao ud = new UserPostgres();
+	private static UserDAO ud = new UserDAOImpl();
 
 	public List<User> getAllUsers() {
 		return ud.getUsers();

@@ -1,5 +1,5 @@
 body {
-    background-image: url(../../../../imgs/sign-in-background.jpg);
+    background-image: url(pictures/sign-in-background.jpg);
     background-position: cover;
 }
 
@@ -18,6 +18,8 @@ body:before {
 .container>.row {
     justify-content: center;
 }
+
+/* SIGN IN PAGE */
 
 #signInPopUp {
     padding: 30px 50px 50px;
@@ -40,13 +42,40 @@ body:before {
     width: 100%;
 }
 
-button.my-button:hover {
+button.my-button:hover, a.btn-primary.my-button:hover, .btn-primary.my-button:active, .btn-primary.my-button:focus {
     background-color: #ffbc53;
     border-color: #ffbc53;
     color: #000;
 }
 
-button.my-button {
+button.my-button, a.my-button {
     background-color: #fe6547;
     border-color: #fe6547;
+}
+
+/* EMPLOYEE PAGE */
+
+#employeeContainer, #managerContainer {
+    padding: 30px 50px 50px;
+    margin-top:100px;
+    border: 1px solid #918787;
+    border-radius: 20px;
+    background-color: #ddddddd9;
+}
+
+#employeeContainer h1, #managerContainer h1 {
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+#employeeContainer h2 {
+    padding: 10px 0;
+}
+
+#employeeServices h2 {
+    padding-bottom: 20px;
+}
+
+#managerServices {
+    padding-top: 50px;
 }

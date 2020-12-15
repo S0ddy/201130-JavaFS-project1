@@ -1,4 +1,4 @@
-package com.revature.daos;
+package com.revature.repos;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -10,7 +10,7 @@ import java.util.List;
 import com.revature.models.User;
 import com.revature.util.ConnectionUtil;
 
-public class UserPostgres implements UserDao {
+public class UserDAOImpl implements UserDAO {
 
 	@Override
 	public List<User> getUsers() {
