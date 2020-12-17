@@ -1,9 +1,9 @@
 body {
-    background-image: url(pictures/sign-in-background.jpg);
+    background-image: url(../pictures/sign-in-background.jpg);
     background-position: cover;
 }
 
-body:before {
+/* body:before {
     content: ""; 
     position: absolute;
     top: 0;
@@ -13,7 +13,9 @@ body:before {
     background-image: linear-gradient(120deg, #133601, #05252f);
     z-index: -1;
     opacity: .7;
-}
+} */
+
+#signInForm {width: 100%;}
 
 .container>.row {
     justify-content: center;

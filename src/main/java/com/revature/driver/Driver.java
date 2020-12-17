@@ -10,7 +10,7 @@ public class Driver {
 
 	private static UserService us = new UserService();
 
-	public static void main(String[] args) {
+//	public static void main(String[] args) {
 
 		// Connection
 //		try {
@@ -37,6 +37,6 @@ public class Driver {
 		
 
 
-	}
+//	}
 
 }

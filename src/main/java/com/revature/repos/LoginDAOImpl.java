@@ -16,22 +16,24 @@ public class LoginDAOImpl implements loginDAO {
 		// If this username exist inside DB, then check password.
 		// If it's matched then return true, else false
 		ResultSet rs = null;
-		String sql = "select ers_password from ers_schema.ers_users where ers_username = ?;";
+		boolean res = false;
+		
+		String sql = "select * from ers_schema.ers_users where ers_users.ers_username = ? and ers_users.ers_password = ?;";
 		
 		try (Connection c = ConnectionUtil.getConnection()) {
 			PreparedStatement ps = c.prepareStatement(sql);
 			ps.setString(1, username);
+			ps.setString(2, password);
 			rs = ps.executeQuery();
 			
-			if(password.equals(rs.getString("ers_password"))) 
-				return true;
+			res = rs.next();
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		return false;
+		return res;
 	}
 
 }

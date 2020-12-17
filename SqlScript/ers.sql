@@ -67,5 +67,6 @@ SELECT ers_users_id, ers_users.ers_username, ers_users.ers_password, ers_users.e
 SELECT ers_users_id, ers_users.ers_username, ers_users.ers_password, ers_users.ers_first_name, ers_users.ers_last_name, ers_users.user_email, ers_user_roles.user_role FROM ers_schema.ers_users INNER JOIN ers_user_roles ON ers_users.user_role_id = ers_user_roles.ers_user_role_id where ers_users.user_role_id = 1
 
 
+select ers_password from ers_schema.ers_users where ers_username = 'manager';
 
-
+SELECT version();

@@ -3,13 +3,17 @@ package com.revature.controller;
 import java.io.BufferedReader;
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.models.LoginDTO;
+import com.revature.models.User;
 import com.revature.services.LoginService;
+import com.revature.services.UserService;
 
 
 
@@ -17,8 +21,9 @@ public class LoginController {
 	
 	private ObjectMapper om = new ObjectMapper();
 	private LoginService ls = new LoginService();
+	private UserService us = new UserService();
 
-	public void login(HttpServletRequest req, HttpServletResponse res) throws IOException {
+	public void login(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 		
 		if (req.getMethod().equals("POST")) {
 			BufferedReader reader = req.getReader();
@@ -42,9 +47,27 @@ public class LoginController {
 
 				ses.setAttribute("user", lDTO);
 				ses.setAttribute("loggedin", true);
+				
+				// Define user role
+				String userRole = null;
+				
+				for (User user : us.getAllUsers()) {
+					if (user.getUserName().equals(lDTO.username))
+						userRole = user.getRole();
+				}
+				
+				//Redirect to Employee/Manager page	
+//				if (userRole.equals("Employee")) {
+//					RequestDispatcher rs = req.getRequestDispatcher("employee.html");
+//					rs.include(req, res);
+//				} else if (userRole.equals("Manager")) {
+//					RequestDispatcher rs = req.getRequestDispatcher("manager.html");
+//					rs.include(req, res);
+//				}
+					
 
+				res.getWriter().print(om.writeValueAsString(userRole));
 				res.setStatus(200);
-				res.getWriter().print("Login Successful");
 
 			} else {
 				HttpSession ses = req.getSession(false);
