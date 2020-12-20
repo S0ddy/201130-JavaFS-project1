@@ -57,6 +57,7 @@ public class LoginController {
 				}
 				
 				ses.setAttribute("user", lDTO);
+				ses.setAttribute("userRole", userRole);
 				ses.setAttribute("userId", id);
 				ses.setAttribute("loggedin", true);
 

@@ -14,5 +14,9 @@ public interface ReimbDAO {
 
 	public List<Reimb> getAllReimb();
 
-	public int reimbDeny(int reimbId, int managerId);
+	public Reimb getReimbById(int id);
+
+	public int reimbUpdate(Reimb reimb2);
+
+	public List<Reimb> getReimbByStatus(int status);
 }

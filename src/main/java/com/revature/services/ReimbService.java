@@ -27,11 +27,21 @@ public class ReimbService {
 		return rd.getAllReimb();
 	}
 
-	public boolean reimbDeny(int reimbId, int managerId) {
-		int reimbDeny = rd.reimbDeny(reimbId, managerId);
-		if(reimbDeny != 0) 
+	public Reimb getReimbById(int id) {
+		return rd.getReimbById(id);
+	}
+
+	public boolean reimbUpdate(Reimb reimb2) {
+		int reimbUpdate = rd.reimbUpdate(reimb2);
+		if (reimbUpdate != 0) {
 			return true;
-		return false;
+		} else {
+			return false;
+		}
+	}
+
+	public List<Reimb> getReimbByStatus(int status) {
+		return rd.getReimbByStatus(status);
 	}
 
 	

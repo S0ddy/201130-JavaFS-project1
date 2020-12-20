@@ -142,7 +142,8 @@ async function showTable(data) {
 
         let cell4 = document.createElement("td");
         if (reimb.resolved != null) {
-            cell4.innerHTML = reimb.resolved;
+            let resolved = new Date(reimb.resolved);
+            cell4.innerHTML = resolved.toDateString();
         }
         else {
             cell4.innerHTML = "";

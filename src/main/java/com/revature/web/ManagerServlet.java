@@ -20,16 +20,10 @@ public class ManagerServlet extends HttpServlet {
 		res.setContentType("application/json");
 		res.setStatus(404); //We override it, if everything is okay
 		final String URI = req.getRequestURI().replace("/project-1/manager/", "");
-		
-		Pattern patternDeny = Pattern.compile("deny");
-		Pattern patternApprove = Pattern.compile("approve");
-
-	    Matcher matcherDeny = patternDeny.matcher(URI);
-	    Matcher matcherApprove = patternApprove.matcher(URI);
 
 		switch(URI) { 
 		case "check-session":
-			if(req.getSession(false)!= null)
+			if(req.getSession(false).getAttribute("userRole").equals("Manager"))
 				res.setStatus(200);
 			else 
 				res.setStatus(403);
@@ -39,9 +33,22 @@ public class ManagerServlet extends HttpServlet {
 			break;
 		}
 		
-		if (matcherDeny.find())
-			mc.reimbDeny(req, res);
-//		else if(matcherApprove.find())
-//			mc.approveReimb(req, res);
+	}
+	
+	@Override 
+	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		res.setContentType("application/json");
+		res.setStatus(404); //We override it, if everything is okay
+		final String URI = req.getRequestURI().replace("/project-1/manager/", "");
+
+		switch(URI) { 
+		case "change-status":
+			mc.changeStatus(req, res);
+			break;
+		case "reimb-by-status":
+			mc.getReimbByStatus(req, res);
+			break;
+		}
+		
 	}
 }

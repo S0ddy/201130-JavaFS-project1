@@ -55,9 +55,9 @@ public class ReimbDAOImpl implements ReimbDAO {
 				Date resolved = rs.getDate("reimb_resolved");
 				String description = rs.getString("reimb_description");
 				int author = rs.getInt("reimb_author");
-				int resolver = rs.getInt("reimb_resolver");;
-				int status = rs.getInt("reimb_status_id");;
-				int type = rs.getInt("reimb_type_id");;
+				int resolver = rs.getInt("reimb_resolver");
+				int status = rs.getInt("reimb_status_id");
+				int type = rs.getInt("reimb_type_id");
 				reimb.add(new Reimb(reimbId, amount, submitted, resolved, description, author, resolver, status, type));
 			}
 		} catch (SQLException e) {
@@ -86,9 +86,9 @@ public class ReimbDAOImpl implements ReimbDAO {
 				Date resolved = rs.getDate("reimb_resolved");
 				String description = rs.getString("reimb_description");
 				int author = rs.getInt("reimb_author");
-				int resolver = rs.getInt("reimb_resolver");;
-				int status = rs.getInt("reimb_status_id");;
-				int type = rs.getInt("reimb_type_id");;
+				int resolver = rs.getInt("reimb_resolver");
+				int status = rs.getInt("reimb_status_id");
+				int type = rs.getInt("reimb_type_id");
 				reimb.add(new Reimb(reimbId, amount, submitted, resolved, description, author, resolver, status, type));
 			}
 		} catch (SQLException e) {
@@ -99,26 +99,82 @@ public class ReimbDAOImpl implements ReimbDAO {
 	}
 
 	@Override
-	public int reimbDeny(int reimbId, int managerId) {
+	public Reimb getReimbById(int id) {
 		
-		int reimbDeny = 0;
-		String sql = "update ers_schema.ers_reimbursement set reimb_status_id = 3, reimb_resolved = CURRENT_DATE, reimb_resolver = ? where reimb_id = ?;";
+		Reimb reimb = null;
+		String sql = "select * from ers_schema.ers_reimbursement where reimb_id = ?;";
+
+		try (Connection c = ConnectionUtil.getConnection()) {
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				double amount = rs.getDouble("reimb_amount");
+				Date submitted = rs.getDate("reimb_submitted");
+				Date resolved = rs.getDate("reimb_resolved");
+				String description = rs.getString("reimb_description");
+				int author = rs.getInt("reimb_author");
+				int resolver = rs.getInt("reimb_resolver");
+				int status = rs.getInt("reimb_status_id");
+				int type = rs.getInt("reimb_type_id");
+				reimb = new Reimb(id, amount, submitted, resolved, description, author, resolver, status, type);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return reimb;
+	}
+
+	@Override
+	public int reimbUpdate(Reimb reimb2) {
+		int reimbUpdate = 0;
+		String sql = "update ers_schema.ers_reimbursement set reimb_resolved = CURRENT_DATE, reimb_resolver = ?, reimb_status_id = ? where reimb_id = ?";
 
 		try (Connection c = ConnectionUtil.getConnection()) {
 			PreparedStatement ps = c.prepareStatement(sql);
 
-			ps.setInt(1, managerId);
-			ps.setInt(2, reimbId);
+			ps.setInt(1, reimb2.getResolver());
+			ps.setInt(2, reimb2.getStatus());
+			ps.setInt(3, reimb2.getId());
 
-			reimbDeny = ps.executeUpdate();
+			reimbUpdate = ps.executeUpdate();
 
-		} catch (SQLException exc) {
-			exc.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 
+		return reimbUpdate;
+	}
 
-		return reimbDeny;
-		
+	@Override
+	public List<Reimb> getReimbByStatus(int status) {
+		List<Reimb> reimb = new ArrayList<>();
+		String sql = "select * from ers_schema.ers_reimbursement where reimb_status_id = ?;";
+
+		try (Connection c = ConnectionUtil.getConnection()) {
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setInt(1, status);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				int reimbId = rs.getInt("reimb_id");
+				double amount = rs.getDouble("reimb_amount");
+				Date submitted = rs.getDate("reimb_submitted");
+				Date resolved = rs.getDate("reimb_resolved");
+				String description = rs.getString("reimb_description");
+				int author = rs.getInt("reimb_author");
+				int resolver = rs.getInt("reimb_resolver");
+				int type = rs.getInt("reimb_type_id");
+				reimb.add(new Reimb(reimbId, amount, submitted, resolved, description, author, resolver, status, type));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return reimb;
 	}
 
 }

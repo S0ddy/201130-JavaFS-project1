@@ -1,25 +1,35 @@
 const url = "http://localhost:8080/project-1/manager/";
 
 document.getElementById("all").addEventListener('click', showAllReimb);
-document.getElementsByClassName("deny").addEventListener('click', deny);
+document.getElementById("manager-submit").addEventListener('click', changeStatus);
+document.getElementById("in-process").addEventListener('click', inProcess);
+document.getElementById("approved").addEventListener('click', approved);
+document.getElementById("denied").addEventListener('click', denied);
 
-async function deny() {
+async function denied() {
+
+    // hideAll();
+    // console.log(document.getElementsByClassName("form-control"));
+
     let resp = await fetch(url + 'check-session', { credentials: "include" });
     if (resp.status === 200) {
         // document.getElementById("manager-table-row").style.display = "block";
 
-        let response = await fetch(url + 'deny', {
-            method: "POST",
-            body: JSON.stringify(reimbursement),
-            credentials: "include"
-            //Credentials: "include" will ensure that they cookie is captured,
-            //future fetch request will also require this value in order to send the cooke back.
-        });
+        let obj = {
+            'status': 3
+        }
+
+        let response = await fetch(url + 'reimb-by-status', {
+                    method: "POST",
+                    body: JSON.stringify(obj),
+                    credentials: "include"
+                });
 
         if (response.status === 200) {
-            console.log(response);
             document.getElementById("manager-table-body").innerHTML = "";
             let data = await response.json();
+            console.log(data);
+           
 
             await showTable(data);
         }
@@ -28,9 +38,147 @@ async function deny() {
     }
 }
 
+async function approved() {
+
+    // hideAll();
+    // console.log(document.getElementsByClassName("form-control"));
+
+    let resp = await fetch(url + 'check-session', { credentials: "include" });
+    if (resp.status === 200) {
+        // document.getElementById("manager-table-row").style.display = "block";
+
+        let obj = {
+            'status': 2
+        }
+
+        let response = await fetch(url + 'reimb-by-status', {
+                    method: "POST",
+                    body: JSON.stringify(obj),
+                    credentials: "include"
+                });
+
+        if (response.status === 200) {
+            document.getElementById("manager-table-body").innerHTML = "";
+            let data = await response.json();
+            console.log(data);
+           
+
+            await showTable(data);
+        }
+    } else {
+        window.location.href = 'http://localhost:8080/project-1/';
+    }
+}
+
+async function inProcess() {
+
+    // hideAll();
+    // console.log(document.getElementsByClassName("form-control"));
+
+    let resp = await fetch(url + 'check-session', { credentials: "include" });
+    if (resp.status === 200) {
+        // document.getElementById("manager-table-row").style.display = "block";
+
+        let obj = {
+            'status': 1
+        }
+
+        let response = await fetch(url + 'reimb-by-status', {
+                    method: "POST",
+                    body: JSON.stringify(obj),
+                    credentials: "include"
+                });
+
+        if (response.status === 200) {
+            document.getElementById("manager-table-body").innerHTML = "";
+            let data = await response.json();
+            console.log(data);
+           
+
+            await showTable(data);
+        }
+    } else {
+        window.location.href = 'http://localhost:8080/project-1/';
+    }
+}
+
+async function changeStatus() {
+
+    let resp = await fetch(url + 'check-session', { credentials: "include" });
+    if (resp.status === 200) {
+
+        let listOfObjects = [];
+        let el = document.getElementsByClassName("form-control");
+
+        for (let i = 0; i < el.length; i++) {
+            if (el[i].value != 'Select type') {
+                let singleObj = {};
+                singleObj['id'] = Number(el[i].id);
+                if (el[i].value == 'Deny') {
+                    singleObj['status'] = 3;
+                } else if (el[i].value == 'Approve') {
+                    singleObj['status'] = 2;
+                }
+
+                // listOfObjects.push(singleObj);
+
+                console.log(listOfObjects);
+
+                let response = await fetch(url + 'change-status', {
+                    method: "POST",
+                    body: JSON.stringify(singleObj),
+                    credentials: "include"
+                });
+
+                if (response.status === 200) {
+                    console.log(response);
+                    document.getElementById("manager-table-body").innerHTML = "Success!";
+                } else {
+                    document.getElementById("manager-table-body").innerHTML = ":(";
+                }
+            }
+        }
+
+
+    } else {
+        window.location.href = 'http://localhost:8080/project-1/';
+    }
+
+}
+
+// async function deny() {
+//     let resp = await fetch(url + 'check-session', { credentials: "include" });
+//     if (resp.status === 200) {
+//         // document.getElementById("manager-table-row").style.display = "block";
+
+//         // console.log(element.id);
+
+//         let reimbursement = {
+//             id: element.id
+//         };
+
+//         let response = await fetch(url + 'deny', {
+//             method: "POST",
+//             body: JSON.stringify(reimbursement),
+//             credentials: "include"
+//         });
+
+//         if (response.status === 200) {
+//             console.log(response);
+//             document.getElementById("manager-table-body").innerHTML = "";
+//             let data = await response.json();
+
+//             await showTable(data);
+//         }
+//     } else {
+//         window.location.href = 'http://localhost:8080/project-1/';
+//     }
+// }
+
 async function showAllReimb() {
 
     // hideAll();
+    // console.log(document.getElementsByClassName("form-control"));
 
     let resp = await fetch(url + 'check-session', { credentials: "include" });
     if (resp.status === 200) {
@@ -39,7 +187,6 @@ async function showAllReimb() {
         response = await fetch(url + "all-reimb", { credentials: 'include' });
 
         if (response.status === 200) {
-            console.log(response);
             document.getElementById("manager-table-body").innerHTML = "";
             let data = await response.json();
 
@@ -133,14 +280,22 @@ async function showTable(data) {
         // cell10.innerHTML = `<a href='${url}deny/${reimb.id}'>deny</a>`;
         // row.appendChild(cell10);
 
-        let cell9 = document.createElement("td");
-        cell9.innerHTML = `<a class="approve btn btn-primary my-button" id='approve_${reimb.id}'>approve</a>`;
-        row.appendChild(cell9);
+        // let cell9 = document.createElement("td");
+        // cell9.innerHTML = `<a class="approve btn btn-primary my-button" id='${reimb.id}'>approve</a>`;
+        // row.appendChild(cell9);
 
-        let cell10 = document.createElement("td");
-        cell10.innerHTML = `<a class="deny btn btn-primary my-button" id='deny_${reimb.id}'>deny</a>`;
-        row.appendChild(cell10);
-        
+        // let cell10 = document.createElement("td");
+        // cell10.innerHTML = `<a class="deny btn btn-primary my-button" id='0${reimb.id}'>deny</a>`;
+        // row.appendChild(cell10);
+
+        let cell9 = document.createElement("td");
+        if (reimb.status == 1) {
+            cell9.innerHTML = `<select id="${reimb.id}" class="form-control"><option selected>Select type</option><option>Approve</option><option>Deny</option></select>`;
+        } else {
+            cell9.innerHTML = '';
+        }
+
+        row.appendChild(cell9);
 
         document.getElementById("manager-table-body").appendChild(row);
 

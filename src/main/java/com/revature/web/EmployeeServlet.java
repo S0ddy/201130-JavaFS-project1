@@ -21,7 +21,7 @@ public class EmployeeServlet extends HttpServlet {
 		
 		switch(URI) { 
 		case "check-session":
-			if(req.getSession(false)!= null)
+			if(req.getSession(false).getAttribute("userRole").equals("Employee"))
 				res.setStatus(200);
 			else 
 				res.setStatus(403);

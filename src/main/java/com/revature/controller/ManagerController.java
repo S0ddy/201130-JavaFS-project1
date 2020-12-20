@@ -1,5 +1,6 @@
 package com.revature.controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 
@@ -31,38 +32,72 @@ public class ManagerController {
 
 	}
 
-	public void reimbDeny(HttpServletRequest req, HttpServletResponse res) {
+	public void changeStatus(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 
-		if (req.getMethod().equals("GET")) {
+		if (req.getMethod().equals("POST")) {
 
-			// Get manager id
 			HttpSession ses = req.getSession();
+			BufferedReader reader = req.getReader();
+			StringBuilder sb = new StringBuilder();
+			String line = reader.readLine();
+
+			// Get user id
 			StringBuilder sbId = new StringBuilder();
 			sbId.append(ses.getAttribute("userId"));
 			String sId = new String(sbId);
-			int managerId = 0;
-			try {
-				managerId = Integer.parseInt(sId);;
-			} catch (NumberFormatException e) {
-				res.setStatus(401);
+			int managerId = Integer.parseInt(sId);
+
+			// add information from json
+			while (line != null) {
+				sb.append(line);
+				line = reader.readLine();
 			}
 
-			// Get reimbursement id
-			String URI = req.getRequestURI().replace("/project-1/manager/deny/", "");
-			int reimbId = 0;
-			try {
-				reimbId = Integer.parseInt(URI);
-			} catch (NumberFormatException e) {
-				res.setStatus(401);
-			}
+			// get Status and id
+			String body = new String(sb);
+			Reimb reimb = om.readValue(body, Reimb.class);
 
-			// Deny 'reimbursement record' in table
-			if (rs.reimbDeny(reimbId, managerId)) {
+			// create new object with an identifier known to us
+			Reimb reimb2 = rs.getReimbById(reimb.getId());
+			reimb2.setResolver(managerId);
+			reimb2.setStatus(reimb.getStatus());
+
+			// Update reimbursement record in table
+			if (rs.reimbUpdate(reimb2)) {
 				res.setStatus(200);
 			} else {
 				res.setStatus(401);
+				res.getWriter().print("Login Failed");
 			}
 
+		}
+
+	}
+
+	public void getReimbByStatus(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+		if (req.getMethod().equals("POST")) {
+
+			BufferedReader reader = req.getReader();
+			StringBuilder sb = new StringBuilder();
+			String line = reader.readLine();
+			
+			
+
+			// add information from json
+			while (line != null) {
+				sb.append(line);
+				line = reader.readLine();
+			}
+
+			// get Status
+			String body = new String(sb);
+			Reimb reimb = om.readValue(body, Reimb.class);
+
+			
+			List<Reimb> list = rs.getReimbByStatus(reimb.getStatus());
+			String json = om.writeValueAsString(list);
+			res.getWriter().print(json);
+			res.setStatus(200);
 		}
 
 	}

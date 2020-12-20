@@ -48,7 +48,7 @@ public class EmployeeController {
 			reimb.setSubmitted(null);
 			reimb.setStatus(1);
 
-			// Create new reimbursment record in table
+			// Update reimbursement record in table
 			if (rs.createReimb(reimb)) {
 				res.setStatus(200);
 			} else {
