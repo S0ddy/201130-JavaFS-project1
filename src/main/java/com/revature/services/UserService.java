@@ -14,6 +14,10 @@ public class UserService {
 		return ud.getUsers();
 	}
 	
+	public User getUserById(int id) {
+		return ud.getUserById(id);
+	}
+	
 	public List<User> getEmployees() {
 		return ud.getEmployees();
 	}

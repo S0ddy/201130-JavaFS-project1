@@ -14,20 +14,43 @@
 
 <body id="managerPage">
     <div id="managerContainer" class="container">
-        <h1>Services</h1>
+        <h1>Show reimbursements:</h1>
         
         <div id="managerServices" class="row">
-            <div class="col-sm-4">
-                <a href="#" class="btn btn-lg btn-primary my-button">View pending requests</a>
+            <div class="col-sm-3">
+                <a id="all" class="btn btn-lg btn-primary my-button">All reimbursements</a>
             </div>
-            <div class="col-sm-4">
-                <a href="#" class="btn btn-lg btn-primary my-button">History</a>
+            <div class="col-sm-3">
+                <a id="in-process" class="btn btn-lg btn-primary my-button">In process</a>
             </div>
-            <div class="col-sm-4">
-                <a href="#" class="btn btn-lg btn-primary my-button">Pending requests</a>
+            <div class="col-sm-3">
+                <a id="approved" class="btn btn-lg btn-primary my-button">Approved</a>
+            </div>
+            <div class="col-sm-3">
+                <a id="denied" class="btn btn-lg btn-primary my-button">Denied</a>
             </div>
         </div>
+        <div class="row" id="manager-table-row">
+            <table class="table table-hover table-bordered table-light">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Amount</th>
+                  <th>Submitted date</th>
+                  <th>Resolved date</th>
+                  <th>Description</th>
+                  <th>Resolver</th>
+                  <th>Status</th>
+                  <th>Type</th>
+                  <th colspan="2">Action</th>
+                </tr>
+              </thead>
+              <tbody id="manager-table-body"></tbody>
+            </table>
+          </div>
     </div>
+    <script src="js/manager.js"></script>
+
 </body>
 
 </html>

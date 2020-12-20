@@ -1,5 +1,7 @@
 --CREATE schema ers_schema
 
+--drop table ers_reimbursement;
+--drop table ers_reimbursement_type
 
 show search_path;
 set search_path to ers_schema;
@@ -11,7 +13,7 @@ create table ers_reimbursement_status (
 
 create table ers_reimbursement_type (
 	reimb_type_id SERIAL primary key,
-	reimb_type VARCHAR(10) not null
+	reimb_type VARCHAR(45) not null
 );
 
 create table ers_user_roles (
@@ -35,15 +37,27 @@ create table ers_reimbursement (
 	reimb_submitted DATE not null,
 	reimb_resolved DATE,
 	reimb_description VARCHAR(250),
-	reimb_receipt BYTEA,
+--	reimb_receipt BYTEA,
 	reimb_author INTEGER references ers_users(ers_users_id) not null,
 	reimb_resolver INTEGER references ers_users(ers_users_id),
 	reimb_status_id INTEGER references ers_reimbursement_status(reimb_status_id),
 	reimb_type_id INTEGER references ers_reimbursement_type(reimb_type_id)
 );
 
-insert into ers_user_roles (ers_user_role_id, user_role) values (1, 'Employee')
-insert into ers_user_roles (ers_user_role_id, user_role) values (2, 'Manager')
+insert into ers_reimbursement (reimb_amount, reimb_submitted, reimb_resolved, reimb_description, reimb_author, reimb_resolver, reimb_status_id, reimb_type_id) 
+values (100,  CURRENT_DATE, null, 'description', 6, null, 1, 2);
+
+insert into ers_reimbursement_type (reimb_type_id, reimb_type) values (1, 'Associate Trabel Expense');
+insert into ers_reimbursement_type (reimb_type_id, reimb_type) values (2, 'Certification');
+insert into ers_reimbursement_type (reimb_type_id, reimb_type) values (3, 'Relocation to Training');
+insert into ers_reimbursement_type (reimb_type_id, reimb_type) values (4, 'Software Engineer - Travel Expenses');
+
+insert into ers_user_roles (ers_user_role_id, user_role) values (1, 'Employee');
+insert into ers_user_roles (ers_user_role_id, user_role) values (2, 'Manager');
+
+insert into ers_reimbursement_status (reimb_status_id, reimb_status) values (1, 'in process');
+insert into ers_reimbursement_status (reimb_status_id, reimb_status) values (2, 'approved');
+insert into ers_reimbursement_status (reimb_status_id, reimb_status) values (3, 'rejected');
 
 insert into ers_users (ers_users_id, ers_username, ers_password, ers_first_name, ers_last_name, user_email, user_role_id) values (1, 'esherar0', 'd1ZxS6SlrK', 'Erhart', 'Sherar', 'esherar0@360.cn', 2);
 insert into ers_users (ers_users_id, ers_username, ers_password, ers_first_name, ers_last_name, user_email, user_role_id) values (2, 'doakton1', 'LV21bps', 'Debby', 'Oakton', 'doakton1@europa.eu', 2);
@@ -66,6 +80,7 @@ SELECT ers_users_id, ers_users.ers_username, ers_users.ers_password, ers_users.e
 --Select all employees
 SELECT ers_users_id, ers_users.ers_username, ers_users.ers_password, ers_users.ers_first_name, ers_users.ers_last_name, ers_users.user_email, ers_user_roles.user_role FROM ers_schema.ers_users INNER JOIN ers_user_roles ON ers_users.user_role_id = ers_user_roles.ers_user_role_id where ers_users.user_role_id = 1
 
+select * from ers_reimbursement where reimb_author = 11;
 
 select ers_password from ers_schema.ers_users where ers_username = 'manager';
 

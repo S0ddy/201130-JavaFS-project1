@@ -21,6 +21,8 @@ body {
     justify-content: center;
 }
 
+.warning {color: red; padding-bottom: 10px;}
+
 /* SIGN IN PAGE */
 
 #signInPopUp {
@@ -80,4 +82,28 @@ button.my-button, a.my-button {
 
 #managerServices {
     padding-top: 50px;
+}
+
+#submitRequestForm {
+    margin-top: 40px;
+}
+
+#submitRequestForm .input-group {
+    margin-bottom: 25px;
+}
+
+#submitRequestForm {
+    display: none;
+}
+
+#formSent {
+    color: #007d00;
+    margin-top: 30px;
+    font-weight: 500;
+    display: none;
+}
+
+#emplTableRow {
+    margin-top: 30px;
+    display: none;
 }

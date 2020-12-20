@@ -41,30 +41,24 @@ public class LoginController {
 
 			LoginDTO lDTO = om.readValue(body, LoginDTO.class);
 
-			if (ls.login(lDTO.username, lDTO.password)) {
+			if (ls.login(lDTO.getUsername(), lDTO.getPassword())) {
 
 				HttpSession ses = req.getSession();
-
-				ses.setAttribute("user", lDTO);
-				ses.setAttribute("loggedin", true);
-				
-				// Define user role
+		
+				// Define user id and role
 				String userRole = null;
+				int id = 0;
 				
 				for (User user : us.getAllUsers()) {
-					if (user.getUserName().equals(lDTO.username))
+					if (user.getUserName().equals(lDTO.getUsername())) {
 						userRole = user.getRole();
+						id = user.getId();
+					}	
 				}
 				
-				//Redirect to Employee/Manager page	
-//				if (userRole.equals("Employee")) {
-//					RequestDispatcher rs = req.getRequestDispatcher("employee.html");
-//					rs.include(req, res);
-//				} else if (userRole.equals("Manager")) {
-//					RequestDispatcher rs = req.getRequestDispatcher("manager.html");
-//					rs.include(req, res);
-//				}
-					
+				ses.setAttribute("user", lDTO);
+				ses.setAttribute("userId", id);
+				ses.setAttribute("loggedin", true);
 
 				res.getWriter().print(om.writeValueAsString(userRole));
 				res.setStatus(200);

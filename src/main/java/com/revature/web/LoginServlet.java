@@ -7,13 +7,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.revature.controller.EmployeeController;
 import com.revature.controller.LoginController;
 
 public class LoginServlet extends HttpServlet {
 
 	private LoginController lc = new LoginController();
-//	private EmployeeController ec = new EmployeeController();
 	
 	@Override 
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {

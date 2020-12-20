@@ -9,6 +9,6 @@ public interface UserDAO {
 	public List<User> getUsers();
 	public List<User> getEmployees();
 	public List<User> getManagers();
-	public User getUserByLogin(String login);
+	public User getUserById(int id);
 	
 }
