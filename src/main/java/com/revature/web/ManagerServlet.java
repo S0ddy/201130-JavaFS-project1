@@ -9,11 +9,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.revature.controller.LoginController;
 import com.revature.controller.ManagerController;
 
 
 public class ManagerServlet extends HttpServlet {
 	ManagerController mc = new ManagerController();
+	LoginController lc = new LoginController();
 
 	@Override 
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -30,6 +32,9 @@ public class ManagerServlet extends HttpServlet {
 			break;
 		case "all-reimb":
 			mc.getAllReimb(req, res);
+			break;
+		case "logout":
+			lc.logout(req, res);
 			break;
 		}
 		

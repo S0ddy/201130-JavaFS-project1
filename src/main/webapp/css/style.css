@@ -103,7 +103,27 @@ button.my-button, a.my-button {
     display: none;
 }
 
-#emplTableRow {
+#change-status-success {
+    color: #007d00;
+    margin-top: 30px;
+    font-weight: 500;
+    font-size: 18px;
+    display: none;
+}
+
+#emplTableRow, #manager-table-row {
     margin-top: 30px;
     display: none;
+}
+
+#logout {
+    background-color: #ffffff;
+    border-color: white;
+    color: black;
+}
+
+#logout:hover {
+    background-color: #fe6547;
+    color: white;
+    border-color: #fe6547;
 }

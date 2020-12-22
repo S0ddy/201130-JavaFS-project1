@@ -3,6 +3,13 @@ const url = "http://localhost:8080/project-1/employee/";
 document.getElementById("submit-request").addEventListener('click', showSubmitForm);
 document.getElementById("my-history").addEventListener('click', showHistory);
 document.getElementById("pending-request").addEventListener('click', showPending);
+document.getElementById("logout").addEventListener('click', logout);
+
+async function logout() {
+    response = await fetch(url + "logout", { credentials: 'include' });
+    window.location.href = 'http://localhost:8080/project-1/';
+}
+
 async function showPending() {
     hideAll();
     let resp = await fetch(url + 'check-session', { credentials: "include" });
@@ -90,8 +97,6 @@ async function submitForm() {
                 method: "POST",
                 body: JSON.stringify(reimbursement),
                 credentials: "include"
-                //Credentials: "include" will ensure that they cookie is captured,
-                //future fetch request will also require this value in order to send the cooke back.
             });
 
             if (resp.status === 200) {

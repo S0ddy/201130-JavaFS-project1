@@ -5,15 +5,18 @@ document.getElementById("manager-submit").addEventListener('click', changeStatus
 document.getElementById("in-process").addEventListener('click', inProcess);
 document.getElementById("approved").addEventListener('click', approved);
 document.getElementById("denied").addEventListener('click', denied);
+document.getElementById("logout").addEventListener('click', logout);
+
+async function logout() {
+    response = await fetch(url + "logout", { credentials: 'include' });
+    window.location.href = 'http://localhost:8080/project-1/';
+}
 
 async function denied() {
-
-    // hideAll();
-    // console.log(document.getElementsByClassName("form-control"));
-
+    document.getElementById("change-status-success").style.display = "none";
     let resp = await fetch(url + 'check-session', { credentials: "include" });
     if (resp.status === 200) {
-        // document.getElementById("manager-table-row").style.display = "block";
+        document.getElementById("manager-table-row").style.display = "block";
 
         let obj = {
             'status': 3
@@ -27,9 +30,7 @@ async function denied() {
 
         if (response.status === 200) {
             document.getElementById("manager-table-body").innerHTML = "";
-            let data = await response.json();
-            console.log(data);
-           
+            let data = await response.json();           
 
             await showTable(data);
         }
@@ -39,13 +40,10 @@ async function denied() {
 }
 
 async function approved() {
-
-    // hideAll();
-    // console.log(document.getElementsByClassName("form-control"));
-
+    document.getElementById("change-status-success").style.display = "none";
     let resp = await fetch(url + 'check-session', { credentials: "include" });
     if (resp.status === 200) {
-        // document.getElementById("manager-table-row").style.display = "block";
+        document.getElementById("manager-table-row").style.display = "block";
 
         let obj = {
             'status': 2
@@ -59,9 +57,7 @@ async function approved() {
 
         if (response.status === 200) {
             document.getElementById("manager-table-body").innerHTML = "";
-            let data = await response.json();
-            console.log(data);
-           
+            let data = await response.json();           
 
             await showTable(data);
         }
@@ -72,12 +68,10 @@ async function approved() {
 
 async function inProcess() {
 
-    // hideAll();
-    // console.log(document.getElementsByClassName("form-control"));
-
     let resp = await fetch(url + 'check-session', { credentials: "include" });
     if (resp.status === 200) {
-        // document.getElementById("manager-table-row").style.display = "block";
+        document.getElementById("change-status-success").style.display = "none";
+        document.getElementById("manager-table-row").style.display = "block";
 
         let obj = {
             'status': 1
@@ -92,8 +86,6 @@ async function inProcess() {
         if (response.status === 200) {
             document.getElementById("manager-table-body").innerHTML = "";
             let data = await response.json();
-            console.log(data);
-           
 
             await showTable(data);
         }
@@ -120,10 +112,6 @@ async function changeStatus() {
                     singleObj['status'] = 2;
                 }
 
-                // listOfObjects.push(singleObj);
-
-                console.log(listOfObjects);
-
                 let response = await fetch(url + 'change-status', {
                     method: "POST",
                     body: JSON.stringify(singleObj),
@@ -131,8 +119,8 @@ async function changeStatus() {
                 });
 
                 if (response.status === 200) {
-                    console.log(response);
-                    document.getElementById("manager-table-body").innerHTML = "Success!";
+                    document.getElementById("manager-table-row").style.display = "none";
+                    document.getElementById("change-status-success").style.display = "block";
                 } else {
                     document.getElementById("manager-table-body").innerHTML = ":(";
                 }
@@ -146,43 +134,11 @@ async function changeStatus() {
 
 }
 
-// async function deny() {
-//     let resp = await fetch(url + 'check-session', { credentials: "include" });
-//     if (resp.status === 200) {
-//         // document.getElementById("manager-table-row").style.display = "block";
-
-//         // console.log(element.id);
-
-//         let reimbursement = {
-//             id: element.id
-//         };
-
-//         let response = await fetch(url + 'deny', {
-//             method: "POST",
-//             body: JSON.stringify(reimbursement),
-//             credentials: "include"
-//         });
-
-//         if (response.status === 200) {
-//             console.log(response);
-//             document.getElementById("manager-table-body").innerHTML = "";
-//             let data = await response.json();
-
-//             await showTable(data);
-//         }
-//     } else {
-//         window.location.href = 'http://localhost:8080/project-1/';
-//     }
-// }
-
 async function showAllReimb() {
-
-    // hideAll();
-    // console.log(document.getElementsByClassName("form-control"));
-
+    document.getElementById("change-status-success").style.display = "none";
     let resp = await fetch(url + 'check-session', { credentials: "include" });
     if (resp.status === 200) {
-        // document.getElementById("manager-table-row").style.display = "block";
+        document.getElementById("manager-table-row").style.display = "block";
 
         response = await fetch(url + "all-reimb", { credentials: 'include' });
 
@@ -198,8 +154,8 @@ async function showAllReimb() {
 }
 
 async function showTable(data) {
+    document.getElementById("change-status-success").style.display = "none";
     for (let reimb of data) {
-        console.log(reimb);
         let row = document.createElement("tr");
 
         let cell = document.createElement("td");
@@ -271,22 +227,6 @@ async function showTable(data) {
         }
         cell8.innerHTML = type;
         row.appendChild(cell8);
-
-        // let cell9 = document.createElement("td");
-        // cell9.innerHTML = `<a href='${url}approve/${reimb.id}'>approve</a>`;
-        // row.appendChild(cell9);
-
-        // let cell10 = document.createElement("td");
-        // cell10.innerHTML = `<a href='${url}deny/${reimb.id}'>deny</a>`;
-        // row.appendChild(cell10);
-
-        // let cell9 = document.createElement("td");
-        // cell9.innerHTML = `<a class="approve btn btn-primary my-button" id='${reimb.id}'>approve</a>`;
-        // row.appendChild(cell9);
-
-        // let cell10 = document.createElement("td");
-        // cell10.innerHTML = `<a class="deny btn btn-primary my-button" id='0${reimb.id}'>deny</a>`;
-        // row.appendChild(cell10);
 
         let cell9 = document.createElement("td");
         if (reimb.status == 1) {

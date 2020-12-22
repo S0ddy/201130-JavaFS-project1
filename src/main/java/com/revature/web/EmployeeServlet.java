@@ -8,10 +8,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.revature.controller.EmployeeController;
+import com.revature.controller.LoginController;
 
 public class EmployeeServlet extends HttpServlet {
 	
 	EmployeeController ec = new EmployeeController();
+	LoginController lc = new LoginController();
+
 
 	@Override 
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -31,6 +34,9 @@ public class EmployeeServlet extends HttpServlet {
 			break;
 		case "pending":
 			ec.getEmplPending(req, res);
+			break;
+		case "logout":
+			lc.logout(req, res);
 			break;
 		}
 	}

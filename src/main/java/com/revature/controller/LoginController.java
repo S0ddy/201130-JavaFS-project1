@@ -85,5 +85,14 @@ public class LoginController {
 		}
 		
 	}
+
+
+	public void logout(HttpServletRequest req, HttpServletResponse res) {
+		
+		HttpSession httpSession = req.getSession();
+	    httpSession.invalidate();
+	    res.setStatus(200);
+		
+	}
 	
 }
