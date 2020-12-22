@@ -28,9 +28,6 @@ public class LoginController {
 
 	public void login(HttpServletRequest req, HttpServletResponse res) throws IOException, Exception  {
 		
-		log.info("Info");
-		log.warn("Warn");
-		
 		if (req.getMethod().equals("POST")) {
 			BufferedReader reader = req.getReader();
 
@@ -72,7 +69,10 @@ public class LoginController {
 				res.getWriter().print(om.writeValueAsString(userRole));
 				res.setStatus(200);
 
+				log.info("Login Success. User id:" + String.valueOf(id));
+
 			} else {
+				log.warn("Login failed!");
 				HttpSession ses = req.getSession(false);
 				// Logout
 				if (ses != null) {

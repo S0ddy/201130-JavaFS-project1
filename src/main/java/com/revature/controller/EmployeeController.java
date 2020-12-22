@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.models.Reimb;
 import com.revature.services.ReimbService;
@@ -18,6 +21,8 @@ public class EmployeeController {
 
 	private ObjectMapper om = new ObjectMapper();
 	private ReimbService rs = new ReimbService();
+	private static Logger log = LogManager.getRootLogger();
+
 
 	public void createReimbursement(HttpServletRequest req, HttpServletResponse res)
 			throws IOException, ServletException {
@@ -51,9 +56,12 @@ public class EmployeeController {
 			// Update reimbursement record in table
 			if (rs.createReimb(reimb)) {
 				res.setStatus(200);
+				log.info("Reimbursement created.");
+
 			} else {
 				res.setStatus(401);
-				res.getWriter().print("Login Failed");
+				res.getWriter().print("Something went wrong...");
+				log.warn("failure to create reimbursement");
 			}
 		}
 
