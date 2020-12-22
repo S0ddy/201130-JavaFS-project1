@@ -3,11 +3,12 @@ package com.revature.controller;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.models.LoginDTO;
@@ -22,8 +23,13 @@ public class LoginController {
 	private ObjectMapper om = new ObjectMapper();
 	private LoginService ls = new LoginService();
 	private UserService us = new UserService();
+	private static Logger log = LogManager.getRootLogger();
 
-	public void login(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+
+	public void login(HttpServletRequest req, HttpServletResponse res) throws IOException, Exception  {
+		
+		log.info("Info");
+		log.warn("Warn");
 		
 		if (req.getMethod().equals("POST")) {
 			BufferedReader reader = req.getReader();
@@ -40,8 +46,10 @@ public class LoginController {
 			String body = new String(sb);
 
 			LoginDTO lDTO = om.readValue(body, LoginDTO.class);
+			
+			String encryptPass = LoginService.encrypt(lDTO.getPassword(), "Kulikov");
 
-			if (ls.login(lDTO.getUsername(), lDTO.getPassword())) {
+			if (ls.login(lDTO.getUsername(), encryptPass)) {
 
 				HttpSession ses = req.getSession();
 		

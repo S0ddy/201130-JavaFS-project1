@@ -3,44 +3,33 @@ const url = "http://localhost:8080/project-1/employee/";
 document.getElementById("submit-request").addEventListener('click', showSubmitForm);
 document.getElementById("my-history").addEventListener('click', showHistory);
 document.getElementById("pending-request").addEventListener('click', showPending);
-
 async function showPending() {
-
     hideAll();
-
     let resp = await fetch(url + 'check-session', { credentials: "include" });
     if (resp.status === 200) {
         document.getElementById("emplTableRow").style.display = "block";
-
         response = await fetch(url + "pending", { credentials: 'include' });
-
         if (response.status === 200) {
             console.log(response);
             document.getElementById("emplTableBody").innerHTML = "";
             let data = await response.json();
-
             await showTable(data);
         }
     } else {
         window.location.href = 'http://localhost:8080/project-1/';
     }
 }
-
 async function showHistory() {
 
     hideAll();
-
     let resp = await fetch(url + 'check-session', { credentials: "include" });
     if (resp.status === 200) {
         document.getElementById("emplTableRow").style.display = "block";
-
         response = await fetch(url + "history", { credentials: 'include' });
-
         if (response.status === 200) {
             console.log(response);
             document.getElementById("emplTableBody").innerHTML = "";
             let data = await response.json();
-
             await showTable(data);
         }
     } else {

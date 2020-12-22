@@ -25,7 +25,13 @@ public class LoginServlet extends HttpServlet {
 
 		switch(URI) { 
 		case "login":
-			lc.login(req, res);
+			try {
+				lc.login(req, res);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			break;
 		}
 
